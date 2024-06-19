@@ -6,10 +6,10 @@ import model.Person;
 
 import java.util.List;
 
-public class EmployeeLocalRepository {
+public class EmployeeLocalService {
     private final MemoryDatabase memoryDatabase;
 
-    public EmployeeLocalRepository(MemoryDatabase memoryDatabase) {
+    public EmployeeLocalService(MemoryDatabase memoryDatabase) {
         this.memoryDatabase = memoryDatabase;
     }
 
