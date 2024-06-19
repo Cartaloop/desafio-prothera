@@ -13,5 +13,15 @@ public class Employee extends Person {
         this.role = role;
     }
 
+    public BigDecimal getSalary() {
+        return salary;
+    }
+    public void setSalary(BigDecimal salary) {
+        this.salary = salary;
+    }
+
+    public String getRole() {
+        return role;
+    }
 
 }

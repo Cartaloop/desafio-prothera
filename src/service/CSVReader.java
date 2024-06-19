@@ -12,9 +12,9 @@ import java.util.List;
 
 public class CSVReader {
 
-    List<Person> personList = new ArrayList<>();
+    List<Employee> personList = new ArrayList<>();
 
-    public List<Person> readObjects(String csvFileName) {
+    public List<Employee> readObjects(String csvFileName) {
         try {
             BufferedReader br = new BufferedReader(new FileReader(csvFileName));
 
@@ -27,7 +27,7 @@ public class CSVReader {
                 BigDecimal salary = BigDecimal.valueOf(Double.parseDouble(data[2]));
                 String role = data[3];
 
-                Person person = new Employee(name, birthDate, salary, role);
+                Employee person = new Employee(name, birthDate, salary, role);
                 personList.add(person);
 
             }

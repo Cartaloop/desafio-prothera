@@ -1,23 +1,32 @@
 package database;
 
-import model.Person;
+import model.Employee;
+import service.CSVReader;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MemoryDatabase {
-    private final List<Person> persons;
+    private final List<Employee> persons;
 
     public MemoryDatabase() {
         persons = new ArrayList<>();
+        CSVReader csvReader = new CSVReader();
+        addPersons(csvReader.readObjects("/home/lucasrech/development/projects/desafio-prothera/src/resources/employees.csv"));
     }
 
-    public String addPerson(Person person) {
+    public void addPerson(Employee person) {
         persons.add(person);
-        return person.toString();
     }
 
-    public List<Person> getPersons() {
+    public void addPersons(List<Employee> persons) {
+        for (Employee person : persons) {
+            addPerson(person);
+        }
+    }
+
+    public List<Employee> getPersons() {
         if(persons.isEmpty()) {
             return new ArrayList<>();
         }
@@ -31,7 +40,14 @@ public class MemoryDatabase {
             System.out.println("Person name is empty");
         }
 
-        persons.removeIf(e -> e.getNome().contains(name));
+        persons.removeIf(e -> e.getName().contains(name));
+    }
+
+    public void increaseSalaryForAllEmployees(Double percent) {
+        for (Employee person : persons) {
+            BigDecimal newSalary =  (person.getSalary().multiply(BigDecimal.valueOf(percent/100)).add(person.getSalary()));
+            person.setSalary(newSalary);
+        }
     }
 
 }
