@@ -7,7 +7,11 @@ public class Employee extends Person {
     private BigDecimal salary;
     private String role;
 
-    public Employee(String nome, LocalDate birthDate) {
+    public Employee(String nome, String birthDate, BigDecimal salary, String role) {
         super(nome, birthDate);
+        this.salary = salary;
+        this.role = role;
     }
+
+
 }
