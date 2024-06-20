@@ -27,19 +27,8 @@ public class PrintTable {
 
     public void printTableGroupedByRole() {
         Map<String, List<Employee>> groupedByRole = service.groupEmployeesByRole(service.getAllEmployees());
+        template(groupedByRole);
 
-        System.out.printf("%-20s %-30s %-15s %-15s\n", "Nome", "Data Nascimento", "Salário", "Cargo");
-        System.out.println("--------------------------------------------------------------------------------");
-
-        groupedByRole.forEach((role, empList) -> {
-            empList.forEach(employee -> {
-                System.out.printf("%-20s %-30s %-15s %-15s\n",
-                        employee.getName(),
-                        dateFormater.format(employee.getBirthDate()),
-                        decimalFormater.format(employee.getSalary()),
-                        employee.getRole());
-            });
-        });
     }
 
     private void template (List<Employee> condition) {
@@ -54,6 +43,21 @@ public class PrintTable {
                     person.getRole());
 
         }
+    }
+
+    private void template(Map<String, List<Employee>> groupedByRole) {
+        System.out.printf("%-20s %-30s %-15s %-15s\n", "Nome", "Data Nascimento", "Salário", "Cargo");
+        System.out.println("--------------------------------------------------------------------------------");
+
+        groupedByRole.forEach((role, empList) -> {
+            empList.forEach(employee -> {
+                System.out.printf("%-20s %-30s %-15s %-15s\n",
+                        employee.getName(),
+                        employee.getBirthDate(), // Supondo que getBirthDate retorna uma string formatada
+                        employee.getSalary(),
+                        employee.getRole());
+            });
+        });
     }
 
 
