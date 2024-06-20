@@ -1,34 +1,32 @@
 package service;
 
 import model.Employee;
-import model.Person;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
+import static tools.StaticTools.*;
+
 public class PrintTable {
-    NumberFormat nf = NumberFormat.getNumberInstance(Locale.GERMANY);
-    DecimalFormat df = new DecimalFormat("#,##0.00");
+    private final EmployeeLocalService service;
 
-    public void printTable(List<Employee> persons) {
-        System.out.printf("%-20s %-30s %-15s %-15s\n", "Nome", "Data Nascimento ", "Salário", "Cargo");
-        System.out.println("--------------------------------------------------------------------------------");
-
-        for (Employee person : persons) {
-                System.out.printf("%-20s %-30s %-15s %-15s\n",
-                        person.getName(),
-                        person.getBirthDate(),
-                        df.format(person.getSalary()),
-                        person.getRole());
-
-        }
+    public PrintTable(EmployeeLocalService service) {
+        this.service = service;
     }
 
-    public void printTableGroupedByRole(EmployeeLocalService employeeLocalService) {
-        Map<String, List<Employee>> groupedByRole = employeeLocalService.groupEmployeesByRole(employeeLocalService.getAllEmployees());
+
+
+    public void printTable() {
+        template(service.getAllEmployees());
+    }
+
+    public void printTable(String birthDate) {
+        template(service.filterByBirthDate(birthDate));
+    }
+
+    public void printTableGroupedByRole() {
+        Map<String, List<Employee>> groupedByRole = service.groupEmployeesByRole(service.getAllEmployees());
 
         System.out.printf("%-20s %-30s %-15s %-15s\n", "Nome", "Data Nascimento", "Salário", "Cargo");
         System.out.println("--------------------------------------------------------------------------------");
@@ -37,11 +35,25 @@ public class PrintTable {
             empList.forEach(employee -> {
                 System.out.printf("%-20s %-30s %-15s %-15s\n",
                         employee.getName(),
-                        employee.getBirthDate(),
-                        df.format(employee.getSalary()),
+                        dateFormater.format(employee.getBirthDate()),
+                        decimalFormater.format(employee.getSalary()),
                         employee.getRole());
             });
         });
+    }
+
+    private void template (List<Employee> condition) {
+        System.out.printf("%-20s %-30s %-15s %-15s\n", "Nome", "Data Nascimento ", "Salário", "Cargo");
+        System.out.println("--------------------------------------------------------------------------------");
+
+        for (Employee person : condition) {
+            System.out.printf("%-20s %-30s %-15s %-15s\n",
+                    person.getName(),
+                    dateFormater.format(person.getBirthDate()),
+                    decimalFormater.format(person.getSalary()),
+                    person.getRole());
+
+        }
     }
 
 

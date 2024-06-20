@@ -1,30 +1,30 @@
-import database.MemoryDatabase;
-import model.Employee;
 import service.EmployeeLocalService;
 import service.PrintTable;
 
-import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        MemoryDatabase db = new MemoryDatabase();
-        EmployeeLocalService service = new EmployeeLocalService(db);
+        EmployeeLocalService service = new EmployeeLocalService();
 
-        PrintTable print = new PrintTable();
-        print.printTable(service.getAllEmployees());
+        PrintTable print = new PrintTable(service);
+        print.printTable();
 
         //Remove o funcionário João
         System.out.println("\n\n\n");
         service.deleteEmployeeByName("João");
-        print.printTable(service.getAllEmployees());
+        print.printTable();
 
         //Aumenta em 10% o salário de todos os funcionários
         System.out.println("\n\n\n");
         service.increaseSalaryForAllEmployees(10);
-        print.printTable(service.getAllEmployees());
+        print.printTable();
 
         System.out.println("\n\n\n");
-        print.printTableGroupedByRole(service);
+        print.printTableGroupedByRole();
+
+        System.out.println("\n\n\n");
+        print.printTable("02/09/1996");
+
 
     }
 }

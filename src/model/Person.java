@@ -1,22 +1,24 @@
 package model;
 
 
+import tools.StaticTools;
+
 import java.text.ParseException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+
+import static tools.StaticTools.dateFormater;
 
 public abstract class Person {
     private final String name;
     private LocalDate birthDate;
 
-    DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     public Person(String nome, String birthDate) {
         this.name = nome;
 
         try{
-            this.birthDate = LocalDate.parse(birthDate, dateFormat);
+            this.birthDate = LocalDate.parse(birthDate, dateFormater);
         }
         catch(DateTimeParseException e){
             System.out.println("Error parsing date: " + e.getMessage());
@@ -27,7 +29,7 @@ public abstract class Person {
         return name;
     }
 
-    public String getBirthDate() {
-        return birthDate.format(dateFormat);
+    public LocalDate getBirthDate() {
+        return this.birthDate;
     }
 }

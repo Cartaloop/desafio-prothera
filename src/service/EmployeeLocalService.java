@@ -3,17 +3,19 @@ package service;
 import database.MemoryDatabase;
 import model.Employee;
 import model.Person;
+import tools.StaticTools;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class EmployeeLocalService {
-    private final MemoryDatabase memoryDatabase;
+import static tools.StaticTools.dateFormater;
+import static tools.StaticTools.decimalFormater;
 
-    public EmployeeLocalService(MemoryDatabase memoryDatabase) {
-        this.memoryDatabase = memoryDatabase;
-    }
+public class EmployeeLocalService {
+    private final MemoryDatabase memoryDatabase = new MemoryDatabase();
+
 
     public void addEmployee(Employee employee) {
         memoryDatabase.addPerson(employee);
@@ -67,5 +69,13 @@ public class EmployeeLocalService {
     public Map<String, List<Employee>> groupEmployeesByRole(List<Employee> employees) {
         return employees.stream()
                 .collect(Collectors.groupingBy(Employee::getRole));
+    }
+
+
+    public List<Employee> filterByBirthDate(String birthDateStr) {
+        LocalDate birthDate = LocalDate.parse(birthDateStr, dateFormater);
+        return memoryDatabase.getPersons().stream()
+                .filter(e -> e.getBirthDate().equals(birthDate))
+                .collect(Collectors.toList());
     }
 }
