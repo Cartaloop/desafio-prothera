@@ -53,15 +53,11 @@ public class PrintTable {
         System.out.printf("%-20s %-30s %-15s %-15s\n", "Nome", "Data Nascimento", "Salário", "Função");
         System.out.println("--------------------------------------------------------------------------------");
 
-        groupedByRole.forEach((role, empList) -> {
-            empList.forEach(employee -> {
-                System.out.printf("%-20s %-30s %-15s %-15s\n",
-                        employee.getName(),
-                        dateFormater.format(employee.getBirthDate()),
-                        employee.getSalary(),
-                        employee.getRole());
-            });
-        });
+        groupedByRole.forEach((role, empList) -> empList.forEach(employee -> System.out.printf("%-20s %-30s %-15s %-15s\n",
+                employee.getName(),
+                dateFormater.format(employee.getBirthDate()),
+                employee.getSalary(),
+                employee.getRole())));
     }
 
     private void template(int age, Employee senior){
