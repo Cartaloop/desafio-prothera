@@ -23,7 +23,7 @@ public class Main {
         print.printTableGroupedByRole();
 
         System.out.println("\n\n\n");
-        print.printTable("02/09/1996");
+        print.printTable("02/09/1996", "18/10/2000");
 
 
     }

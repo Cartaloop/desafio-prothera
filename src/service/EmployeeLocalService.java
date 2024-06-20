@@ -72,10 +72,14 @@ public class EmployeeLocalService {
     }
 
 
-    public List<Employee> filterByBirthDate(String birthDateStr) {
-        LocalDate birthDate = LocalDate.parse(birthDateStr, dateFormater);
+    public List<Employee> filterByBirthDateRange(String birthDateStrInit, String birthDateStrEnd) {
+        LocalDate birthDateStart = LocalDate.parse(birthDateStrInit, dateFormater);
+        LocalDate birthDateEnd = LocalDate.parse(birthDateStrEnd, dateFormater);
         return memoryDatabase.getPersons().stream()
-                .filter(e -> e.getBirthDate().equals(birthDate))
-                .collect(Collectors.toList());
+                .filter(e -> {
+                    LocalDate eBirthDate = e.getBirthDate();
+                    return !eBirthDate.isBefore(birthDateStart) && !eBirthDate.isAfter(birthDateEnd);
+                })
+                .collect(Collectors.toList().);
     }
 }

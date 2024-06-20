@@ -21,8 +21,8 @@ public class PrintTable {
         template(service.getAllEmployees());
     }
 
-    public void printTable(String birthDate) {
-        template(service.filterByBirthDate(birthDate));
+    public void printTable(String birthDateStart, String birthDateEnd) {
+        template(service.filterByBirthDateRange(birthDateStart, birthDateEnd));
     }
 
     public void printTableGroupedByRole() {
