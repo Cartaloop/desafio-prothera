@@ -2,6 +2,10 @@ package service;
 
 import database.MemoryDatabase;
 import model.Employee;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.*;
@@ -67,4 +71,30 @@ public class EmployeeLocalService {
         employees.sort(Comparator.comparing(Employee::getName));
         return employees;
     }
+
+    public Map<String, BigDecimal> calculateMinimumSalaries() {
+        List<Employee> employees = this.getAllEmployees();
+        Map<String, BigDecimal> minimumSalaries = new HashMap<>();
+
+        BigDecimal minimumWage = new BigDecimal("1212.00");
+
+        for (Employee employee : employees) {
+            BigDecimal salary = employee.getSalary();
+            BigDecimal numberOfMinimumSalaries = salary.divide(minimumWage, RoundingMode.CEILING);
+            minimumSalaries.put(employee.getName(), numberOfMinimumSalaries);
+        }
+        return minimumSalaries;
+    }
+
+    public BigDecimal calculateTotalSalary() {
+        List<Employee> employees = this.getAllEmployees();
+        BigDecimal totalSalary = BigDecimal.ZERO;
+        for (Employee employee : employees) {
+            totalSalary = totalSalary.add(employee.getSalary());
+        }
+        return totalSalary;
+    }
+
+
+    
 }

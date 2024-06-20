@@ -19,18 +19,29 @@ public class Main {
         service.increaseSalaryForAllEmployees(10);
         print.printTable();
 
+        //Agrupa por função
         System.out.println("\n\n\n");
         print.printTableGroupedByRole();
 
+        // Filtra por raio de datas
         System.out.println("\n\n\n");
         print.printTable("02/09/1996", "18/10/2000");
 
+        //Retorna o funcionário mais velho
         System.out.println("\n\n\n");
         print.printTableSeniorEmployee();
 
+        //Organiza por ordem alfabética
         System.out.println("\n\n\n");
-        System.out.println("Em ordem alfabética");
-        print.printTable(service.sortEmployeesInAlphabeticOrder());
+        print.printTableSortedByName();
+
+        //Imprime o total de todos os salários
+        System.out.println("\n\n\n");
+        print.printAmountEmployeesSalary();
+
+        System.out.println("\n\n\n");
+        print.printTotalOfMinimumSalaryPerEmployee();
+
 
 
     }
