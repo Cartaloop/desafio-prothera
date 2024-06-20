@@ -1,11 +1,12 @@
 package service;
 
-import database.MemoryDatabase;
+import datasheet.MemoryDatabase;
+import dto.MinimumSalary;
+import dto.SeniorEmployee;
 import model.Employee;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.*;
@@ -28,8 +29,6 @@ public class EmployeeLocalService {
 
     public void increaseSalaryForAllEmployees(double percent) {
         memoryDatabase.increaseSalaryForAllEmployees(percent);
-        System.out.println("Salary increased for: " + memoryDatabase.getPersons().size() + " employees.");
-        System.out.println("\n\n\n");
     }
 
     public Map<String, List<Employee>> groupEmployeesByRole(List<Employee> employees) {
@@ -50,21 +49,19 @@ public class EmployeeLocalService {
                 .collect(Collectors.toList());
     }
 
-    public Employee getSeniorEmployee() {
+    public SeniorEmployee getSeniorEmployee() {
         List<Employee> employees = getAllEmployees();
-        return employees.stream()
-                .min(Comparator.comparing(Employee::getBirthDate))
-                .orElse(null);
+
+        if(employees.isEmpty()) {
+            return null;
+        }
+        Employee oldest = employees.stream().min(Comparator.comparing(Employee::getBirthDate)).get();
+        Period period = Period.between(oldest.getBirthDate(), LocalDate.now());
+
+        return new SeniorEmployee(oldest.getName(), period.getYears());
     }
 
-    public int calculateSeniorAge() {
-        Employee employee = this.getSeniorEmployee();
-        if (employee == null) {
-            throw new RuntimeException("Senior employee not found");
-        }
-        Period period = Period.between(employee.getBirthDate(), LocalDate.now());
-        return period.getYears();
-    }
+
 
     public List<Employee> sortEmployeesInAlphabeticOrder() {
         List<Employee> employees = this.getAllEmployees();
@@ -72,18 +69,18 @@ public class EmployeeLocalService {
         return employees;
     }
 
-    public Map<String, BigDecimal> calculateMinimumSalaries() {
+    public Set<MinimumSalary> calculateMinimumSalaries() {
         List<Employee> employees = this.getAllEmployees();
-        Map<String, BigDecimal> minimumSalaries = new HashMap<>();
 
         BigDecimal minimumWage = new BigDecimal("1212.00");
+        Set<MinimumSalary> minimumSalariesList = new HashSet<>();
 
         for (Employee employee : employees) {
             BigDecimal salary = employee.getSalary();
             BigDecimal numberOfMinimumSalaries = salary.divide(minimumWage, RoundingMode.CEILING);
-            minimumSalaries.put(employee.getName(), numberOfMinimumSalaries);
+            minimumSalariesList.add(new MinimumSalary(employee.getName(), numberOfMinimumSalaries));
         }
-        return minimumSalaries;
+        return minimumSalariesList;
     }
 
     public BigDecimal calculateTotalSalary() {
