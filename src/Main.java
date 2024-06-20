@@ -25,6 +25,9 @@ public class Main {
         System.out.println("\n\n\n");
         print.printTable("02/09/1996", "18/10/2000");
 
+        System.out.println("\n\n\n");
+        print.printTableSeniorEmployee();
+
 
     }
 }

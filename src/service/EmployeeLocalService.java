@@ -3,15 +3,14 @@ package service;
 import database.MemoryDatabase;
 import model.Employee;
 import model.Person;
-import tools.StaticTools;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.*;
 import java.util.stream.Collectors;
 
 import static tools.StaticTools.dateFormater;
-import static tools.StaticTools.decimalFormater;
 
 public class EmployeeLocalService {
     private final MemoryDatabase memoryDatabase = new MemoryDatabase();
@@ -75,11 +74,28 @@ public class EmployeeLocalService {
     public List<Employee> filterByBirthDateRange(String birthDateStrInit, String birthDateStrEnd) {
         LocalDate birthDateStart = LocalDate.parse(birthDateStrInit, dateFormater);
         LocalDate birthDateEnd = LocalDate.parse(birthDateStrEnd, dateFormater);
-        return memoryDatabase.getPersons().stream()
+        List<Employee> employees = getAllEmployees();
+        return employees.stream()
                 .filter(e -> {
                     LocalDate eBirthDate = e.getBirthDate();
                     return !eBirthDate.isBefore(birthDateStart) && !eBirthDate.isAfter(birthDateEnd);
                 })
                 .collect(Collectors.toList());
+    }
+
+    public Employee getSeniorEmployee() {
+        List<Employee> employees = getAllEmployees();
+        return employees.stream()
+                .min(Comparator.comparing(Employee::getBirthDate))
+                .orElse(null);
+    }
+
+    public int calculateSeniorAge() {
+        Employee employee = getSeniorEmployee();
+        if (employee == null) {
+            throw new RuntimeException("Senior employee not found");
+        }
+        Period period = Period.between(employee.getBirthDate(), LocalDate.now());
+        return period.getYears();
     }
 }
