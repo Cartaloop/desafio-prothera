@@ -80,6 +80,6 @@ public class EmployeeLocalService {
                     LocalDate eBirthDate = e.getBirthDate();
                     return !eBirthDate.isBefore(birthDateStart) && !eBirthDate.isAfter(birthDateEnd);
                 })
-                .collect(Collectors.toList().);
+                .collect(Collectors.toList());
     }
 }
