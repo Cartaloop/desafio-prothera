@@ -54,11 +54,17 @@ public class EmployeeLocalService {
     }
 
     public int calculateSeniorAge() {
-        Employee employee = getSeniorEmployee();
+        Employee employee = this.getSeniorEmployee();
         if (employee == null) {
             throw new RuntimeException("Senior employee not found");
         }
         Period period = Period.between(employee.getBirthDate(), LocalDate.now());
         return period.getYears();
+    }
+
+    public List<Employee> sortEmployeesInAlphabeticOrder() {
+        List<Employee> employees = this.getAllEmployees();
+        employees.sort(Comparator.comparing(Employee::getName));
+        return employees;
     }
 }

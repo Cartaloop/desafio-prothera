@@ -28,6 +28,10 @@ public class Main {
         System.out.println("\n\n\n");
         print.printTableSeniorEmployee();
 
+        System.out.println("\n\n\n");
+        System.out.println("Em ordem alfabética");
+        print.printTable(service.sortEmployeesInAlphabeticOrder());
+
 
     }
 }

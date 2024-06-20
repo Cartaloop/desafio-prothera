@@ -18,6 +18,10 @@ public class PrintTable {
         template(service.getAllEmployees());
     }
 
+    public void printTable(List<Employee> employees) {
+        template(employees);
+    }
+
     public void printTable(String birthDateStart, String birthDateEnd) {
         template(service.filterByBirthDateRange(birthDateStart, birthDateEnd));
     }
