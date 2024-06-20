@@ -36,5 +36,4 @@ public class CSVReader {
         }
         return personList;
     }
-
 }

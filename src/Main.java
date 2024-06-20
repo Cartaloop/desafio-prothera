@@ -1,6 +1,9 @@
 import database.MemoryDatabase;
+import model.Employee;
 import service.EmployeeLocalService;
 import service.PrintTable;
+
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
@@ -15,10 +18,13 @@ public class Main {
         service.deleteEmployeeByName("João");
         print.printTable(service.getAllEmployees());
 
-        //Aumenta em 20% o salário de todos os funcionários
+        //Aumenta em 10% o salário de todos os funcionários
         System.out.println("\n\n\n");
-        service.increaseSalaryForAllEmployees(20);
+        service.increaseSalaryForAllEmployees(10);
         print.printTable(service.getAllEmployees());
+
+        System.out.println("\n\n\n");
+        print.printTableGroupedByRole(service);
 
     }
 }

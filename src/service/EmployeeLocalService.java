@@ -5,8 +5,8 @@ import model.Employee;
 import model.Person;
 
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class EmployeeLocalService {
     private final MemoryDatabase memoryDatabase;
@@ -62,5 +62,10 @@ public class EmployeeLocalService {
         memoryDatabase.increaseSalaryForAllEmployees(percent);
         System.out.println("Salary increased for: " + memoryDatabase.getPersons().size() + " employees.");
         System.out.println("\n\n\n");
+    }
+
+    public Map<String, List<Employee>> groupEmployeesByRole(List<Employee> employees) {
+        return employees.stream()
+                .collect(Collectors.groupingBy(Employee::getRole));
     }
 }
