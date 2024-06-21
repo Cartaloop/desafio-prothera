@@ -18,6 +18,7 @@ public class EmployeeController {
     }
 
     public void deleteEmployeeByName(String name) {
+        System.out.printf("Usuário %s deletado com sucesso", name);
         service.deleteEmployeeByName(name);
     }
 
@@ -31,8 +32,8 @@ public class EmployeeController {
         );
     }
 
-    public List<Employee> filterByDateRange(String startDate, String endDate) {
-        return service.filterByBirthDateRange(startDate, endDate);
+    public List<Employee> filterByDateRange(int... months) {
+        return service.filterByBirthMonths(months);
     }
 
     public SeniorEmployee getSeniorEmployee() {

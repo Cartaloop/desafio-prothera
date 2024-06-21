@@ -23,8 +23,6 @@ public class EmployeeLocalService {
 
     public void deleteEmployeeByName(String name) {
         memoryDatabase.removePersonByName(name);
-        System.out.println("Deleted employee with name " + name);
-        System.out.println("\n\n\n");
     }
 
     public void increaseSalaryForAllEmployees(double percent) {
@@ -37,17 +35,21 @@ public class EmployeeLocalService {
     }
 
 
-    public List<Employee> filterByBirthDateRange(String birthDateStrInit, String birthDateStrEnd) {
-        LocalDate birthDateStart = LocalDate.parse(birthDateStrInit, dateFormater);
-        LocalDate birthDateEnd = LocalDate.parse(birthDateStrEnd, dateFormater);
+    public List<Employee> filterByBirthMonths(int... months) {
         List<Employee> employees = getAllEmployees();
         return employees.stream()
                 .filter(e -> {
-                    LocalDate eBirthDate = e.getBirthDate();
-                    return !eBirthDate.isBefore(birthDateStart) && !eBirthDate.isAfter(birthDateEnd);
+                    int birthMonth = e.getBirthDate().getMonthValue();
+                    for (int month : months) {
+                        if (birthMonth == month) {
+                            return true;
+                        }
+                    }
+                    return false;
                 })
                 .collect(Collectors.toList());
     }
+
 
     public SeniorEmployee getSeniorEmployee() {
         List<Employee> employees = getAllEmployees();
