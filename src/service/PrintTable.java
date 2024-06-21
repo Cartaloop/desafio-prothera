@@ -1,54 +1,39 @@
     package service;
 
+    import controller.EmployeeController;
+    import dto.MinimumSalary;
+    import dto.SeniorEmployee;
     import model.Employee;
 
     import java.math.BigDecimal;
     import java.math.RoundingMode;
     import java.util.List;
     import java.util.Map;
+    import java.util.Set;
+
     import static tools.StaticTools.*;
 
     public class PrintTable {
-        private final EmployeeLocalService service;
 
-        public PrintTable(EmployeeLocalService service) {
-            this.service = service;
+        public void printTable(List<Employee> employees) {
+            template(employees);
+        }
+        public void printTable(Set<MinimumSalary> minimumSalaries) {
+            template(minimumSalaries);
         }
 
-        public void printTable() {
-            template(service.getAllEmployees());
+        public void printTable(Map<String, List<Employee>> employees) {
+            template(employees);
         }
 
-        public void printTable(String birthDateStart, String birthDateEnd) {
-            template(service.filterByBirthDateRange(birthDateStart, birthDateEnd));
+        public void printTable(SeniorEmployee employee){
+            template(employee);
         }
 
-        public void printAmountEmployeesSalary() {
-            BigDecimal amount = service.calculateTotalSalary();
-            template(amount);
+        public void printTable(BigDecimal totalSalary) {
+            template(totalSalary);
         }
 
-        public void printTotalOfMinimumSalaryPerEmployee() {
-            Map<String, BigDecimal> minimumSalaries = service.calculateMinimumSalaries();
-
-            templateToMinimumSalaries(minimumSalaries);
-        }
-
-
-        public void printTableGroupedByRole() {
-            Map<String, List<Employee>> groupedByRole = service.groupEmployeesByRole(service.getAllEmployees());
-            template(groupedByRole);
-        }
-
-        public void printTableSortedByName() {
-            template(this.service.sortEmployeesInAlphabeticOrder());
-        }
-
-        public void printTableSeniorEmployee() {
-            Employee senior = service.getSeniorEmployee();
-            int age = service.calculateSeniorAge();
-            template(age, senior);
-        }
 
         private void template (List<Employee> condition) {
             System.out.printf("%-20s %-30s %-15s %-15s\n", "Nome", "Data Nascimento ", "Salário", "Função");
@@ -76,14 +61,14 @@
                     employee.getRole())));
         }
 
-        private void template(int age, Employee senior){
+        private void template(SeniorEmployee employee){
             System.out.println("Busca por funcionário mais velho");
             System.out.printf("%-20s %-20s\n", "Nome", "Idade");
             System.out.println("--------------------------");
 
             System.out.printf("%-20s %-30s\n",
-                    senior.getName(),
-                    (age + " anos"));
+                    employee.getName(),
+                    (employee.getAge() + " anos"));
         }
 
         private void template(BigDecimal amount){
@@ -95,15 +80,12 @@
                     decimalFormater.format(amount));
         }
 
-        private void templateToMinimumSalaries(Map<String, BigDecimal> totalMinimumSalaries) {
+        private void template(Set<MinimumSalary> minimumSalaries) {
             System.out.printf("%-20s %-30s\n", "Nome", "Total de salário mínimo");
             System.out.println("----------------------------------------------------");
 
-            for (Map.Entry<String, BigDecimal> entry : totalMinimumSalaries.entrySet()) {
-                String name = entry.getKey();
-                BigDecimal total = entry.getValue();
-
-                System.out.printf("%-20s %-30s\n", name, numberFormater.format(total.setScale(2, RoundingMode.HALF_UP)));
+            for (MinimumSalary entry : minimumSalaries) {
+                System.out.printf("%-20s %-30s\n", entry.getName(), numberFormater.format(entry.getSalary().setScale(2, RoundingMode.HALF_UP)));
             }
         }
 
